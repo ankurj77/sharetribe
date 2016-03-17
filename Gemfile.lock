@@ -60,6 +60,8 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    activesupport-json_encoder (1.1.0)
+      activesupport (>= 4.1.0, < 5.0)
     addressable (2.4.0)
     aggregate (0.2.2)
     airbrake (4.1.0)
@@ -498,6 +500,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-session_store (~> 0.1.2)
+  activesupport-json_encoder
   airbrake (~> 4.1.0)
   annotate (~> 2.6.5)
   aws-sdk (~> 2)
@@ -578,6 +581,3 @@ DEPENDENCIES
   web_translate_it (~> 2.1.8)
   will_paginate (~> 3.0.5)
   zeus (~> 0.15.4)
-
-BUNDLED WITH
-   1.11.2
