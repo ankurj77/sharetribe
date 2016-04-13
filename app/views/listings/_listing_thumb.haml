@@ -9,7 +9,7 @@
     .clear
     - if listing.price
       %span.thumb-price
-        = humanized_money_with_symbol(listing.price).upcase
+        = APP_CONFIG.currency_symbol + humanized_money(listing.price).upcase
         - price_unit = price_quantity_slash_unit(listing)
       - if !price_unit.blank?
         - price_text = " " + price_unit

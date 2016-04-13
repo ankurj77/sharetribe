@@ -2,7 +2,6 @@
 module ApplicationHelper
 
   ICON_PACK = APP_CONFIG.icon_pack || "font-awesome"
-
   ICONS = {
     "ss-pika" => {
 

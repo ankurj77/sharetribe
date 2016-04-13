@@ -14,14 +14,14 @@
 
         %li
           %div
-            = t(".price_per_day", price: humanized_money_with_symbol(listing.price))
+            = t(".price_per_day", price: APP_CONFIG.currency_symbol + humanized_money(listing.price))
 
     - if sum
       %p.message-sum
-        = t("conversations.show.sum", sum: humanized_money_with_symbol(sum))
+        = t("conversations.show.sum", sum: APP_CONFIG.currency_symbol + humanized_money(sum))
     - elsif price
       %p.message-price
-        = t("conversations.show.price", price: humanized_money_with_symbol(listing.price))
+        = t("conversations.show.price", price: APP_CONFIG.currency_symbol + humanized_money(listing.price))
 
         - if listing.quantity.present?
           = "/ #{listing.quantity}"

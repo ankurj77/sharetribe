@@ -66,6 +66,8 @@ class Listing < ActiveRecord::Base
   include ActionView::Helpers::TranslationHelper
   include Rails.application.routes.url_helpers
 
+  #register_currency :inr
+
   belongs_to :author, :class_name => "Person", :foreign_key => "author_id"
 
   has_many :listing_images, -> { where("error IS NULL") }, :dependent => :destroy
