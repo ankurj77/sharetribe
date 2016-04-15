@@ -44,7 +44,7 @@ body {
 .page-content {
   padding-bottom: lines(3);
   padding-top: lines(0.5);
-  min-height: 500px;
+  min-height: 800px;
 
   p {
     margin-bottom: lines(0.5);
@@ -2006,6 +2006,12 @@ $network-green: #00a26c;
   height: 26px;
   border-radius: 5px;
   color: black;
+}
+
+.premium {
+  padding-right: 40px;
+  margin-top: -28px;
+  float: right;
 }
 
 figure.fluidratio {
