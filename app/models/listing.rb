@@ -66,8 +66,6 @@ class Listing < ActiveRecord::Base
   include ActionView::Helpers::TranslationHelper
   include Rails.application.routes.url_helpers
 
-  #register_currency :inr
-
   belongs_to :author, :class_name => "Person", :foreign_key => "author_id"
 
   has_many :listing_images, -> { where("error IS NULL") }, :dependent => :destroy
@@ -222,8 +220,11 @@ class Listing < ActiveRecord::Base
   end
 
   def thumb_image_url
-    "/system/images/" + 
-    self.listing_images.first.id.to_s + "/small_3x2/" +
-    self.listing_images.first.image_file_name
+    if self.listing_images and self.listing_images.first
+      return "/system/images/" + self.listing_images.first.id.to_s + "/small_3x2/" + self.listing_images.first.image_file_name
+    else
+      return "/system/images/no_image.gif"
+    end
   end
+
 end

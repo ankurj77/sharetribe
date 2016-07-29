@@ -16,7 +16,8 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   layout 'application'
 
-  before_filter :check_auth_token,
+  before_filter :check_http_auth,
+    :check_auth_token,
     :fetch_community,
     :fetch_community_plan_expiration_status,
     :perform_redirect,
@@ -453,8 +454,8 @@ class ApplicationController < ActionController::Base
   # the reason to go via session is that the actions that cause events
   # often do a redirect.
   # This is still not fool proof as multiple redirects would lose
-  def report_analytics_event(params_array)
-    session[:analytics_event] = params_array
+  def report_analytics_event(category, action, opt_label)
+    session[:analytics_event] = [category, action, opt_label]
   end
 
   # if session has analytics event
@@ -468,6 +469,26 @@ class ApplicationController < ActionController::Base
 
   def fetch_translations
     WebTranslateIt.fetch_translations
+  end
+
+  def redirect_https?
+    always_use_ssl = APP_CONFIG.always_use_ssl.to_s.downcase == "true"
+    !request.ssl? && always_use_ssl
+  end
+
+  def redirect_https!
+    redirect_to protocol: "https://", status: :moved_permanently
+  end
+
+  def check_http_auth
+    return true unless APP_CONFIG.use_http_auth.to_s.downcase == 'true'
+    if authenticate_with_http_basic { |u, p| u == APP_CONFIG.http_auth_username && p == APP_CONFIG.http_auth_password }
+      true
+    elsif redirect_https?
+      redirect_https!
+    else
+      request_http_basic_authentication
+    end
   end
 
   def check_auth_token

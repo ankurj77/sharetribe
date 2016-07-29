@@ -43,7 +43,7 @@ module EntityUtils
     },
     optional: -> (_, v, _) { nil },
     one_of: -> (allowed, v, _) {
-      unless (allowed.include?(v))
+      unless allowed.include?(v)
         {code: :one_of, msg: "Value must be one of #{allowed}. Was: #{v}." }
       end
     },
@@ -144,6 +144,7 @@ module EntityUtils
     to_symbol: -> (_, v) { v.to_sym unless v.nil? },
     to_string: -> (_, v) { v.to_s unless v.nil? },
     to_integer: -> (_, v) { v.to_i unless v.nil? },
+    to_float: -> (_, v) { v.to_f unless v.nil? },
     to_hash: -> (_, v) { v.to_h unless v.nil? },
     str_to_time: -> (format, v) {
       if v.nil?
@@ -164,7 +165,7 @@ module EntityUtils
       elsif v.is_a?(Time)
         v
       else
-        TimeUtils::utc_str_to_time(v)
+        TimeUtils.utc_str_to_time(v)
       end
     },
     str_to_bool: -> (_, v) {
@@ -183,9 +184,9 @@ module EntityUtils
   }
 
   def spec_category(k)
-    if (VALIDATORS.keys.include?(k))
+    if VALIDATORS.keys.include?(k)
       :validators
-    elsif (TRANSFORMERS.keys.include?(k))
+    elsif TRANSFORMERS.keys.include?(k)
       :transformers
     elsif k == :collection
       :collection
@@ -240,7 +241,7 @@ module EntityUtils
 
       res.push(
         {
-          field: parent_field ? "#{parent_field}.#{field.to_s}" : field.to_s,
+          field: parent_field ? "#{parent_field}.#{field}" : field.to_s,
           code: err[:code],
           msg: err[:msg]
         }
@@ -256,9 +257,9 @@ module EntityUtils
 
       nested_errors =
         if spec[:collection].present? && input[name]
-          input[name].each_with_index.reduce([]) { |errors, (v, i)|
-            collection_errors = validate_all(spec[:collection], v, "#{name.to_s}[#{i}]")
-            errors.concat(collection_errors)
+          input[name].each_with_index.reduce([]) { |ers, (v, i)|
+            collection_errors = validate_all(spec[:collection], v, "#{name}[#{i}]")
+            ers.concat(collection_errors)
           }
         elsif spec[:entity].present? && input[name]
           validate_all(spec[:entity], input[name], name.to_s)
@@ -372,8 +373,8 @@ module EntityUtils
         })
     end
 
-    alias_method :call, :build
-    alias_method :[], :build
+    alias call build
+    alias [] build
 
     def validate(data)
       with_result(

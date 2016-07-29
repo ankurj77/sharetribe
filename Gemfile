@@ -1,8 +1,8 @@
 source 'http://rubygems.org'
 
-ruby '2.1.2'
+ruby '2.2.4'
 
-gem 'rails', '4.2.5.1'
+gem 'rails', '4.2.5.2'
 
 gem 'coffee-rails', "~> 4.0.1"
 gem 'uglifier', "~> 2.7.2"
@@ -22,6 +22,7 @@ gem 'jquery-rails', '3.1.3'
 
 # Bundle the extra gems:
 gem 'activesupport-json_encoder'
+gem 'appsignal'
 
 # gem 'heroku' install the Heroku toolbelt (https://toolbelt.heroku.com/) instead (as gem had some problems)
 gem "passenger", "~> 5.0.18"
@@ -40,7 +41,7 @@ gem 'aws-sdk', '~> 2'
 gem "will_paginate", '~>3.0.5'
 gem 'dalli', "~> 2.6.4"
 gem "memcachier", "~> 0.0.2"
-gem 'kgio', "~>2.8.0"
+gem 'kgio', "~>2.9.2"
 gem 'thinking-sphinx', '~> 3.1.1'
 gem 'flying-sphinx', "~>1.2.0"
 # Use patched v2.0.2
@@ -82,8 +83,15 @@ gem 'paypal-sdk-merchant', '~> 1.116.0'
 gem 'airbrake', '~> 4.1.0'
 gem 'librato-rails', "~> 0.11.1"
 
-# Updating to 1.5.2 breaks tests
-gem 'jwt', '1.5.1'
+gem 'jwt', '~> 1.5.2'
+
+# Use Oauth2 from current master, because the newest release
+# uses old JWT version
+# (This can be removed when oauth2 version > 1.1.0 is released)
+gem 'oauth2',
+  git: 'git://github.com/intridea/oauth2.git',
+  branch: 'master',
+  ref: 'e0006cb5099bf392f011eb5c49cbec4f893bbdba'
 
 gem 'lograge', "~> 0.3.2"
 gem 'public_suffix', "~> 1.5.1" # Needed currently to set GA hostname right, probably not
@@ -112,7 +120,7 @@ group :staging, :production do
 end
 
 group :development, :test do
-  gem 'rubocop', "~> 0.21.0", require: false
+  gem 'rubocop', '~> 0.37.2', require: false
   gem 'factory_girl_rails', "~> 4.4.1"
 end
 

@@ -16,12 +16,16 @@ module ListingIndexService::DataTypes
     [:page, :to_integer, default: 1, gte: 1],
     [:per_page, :to_integer, :mandatory, gte: 1],
     [:keywords, :string, :optional],
+    [:latitude, :to_float, :optional],
+    [:longitude, :to_float, :optional],
+    [:distance_unit, :symbol, :optional],
     [:categories, :array, :optional],
     [:listing_shape_ids, :array, :optional],
     [:price_cents, :range, :optional],
     [:fields, :array, default: []],
     [:author_id, :string],
-    [:include_closed, :to_bool, default: false]
+    [:include_closed, :to_bool, default: false],
+    [:locale, :symbol, :optional]
   )
 
   AvatarImage = EntityUtils.define_builder(
@@ -62,6 +66,8 @@ module ListingIndexService::DataTypes
     [:created_at, :time, :mandatory, str_to_time: "%Y-%m-%dT%H:%M:%S.%L%z"],
     [:latitude],
     [:longitude],
+    [:distance, :optional],
+    [:distance_unit, :optional],
     [:address, :string],
     [:comment_count, :fixnum, :optional],
     [:price, :money],

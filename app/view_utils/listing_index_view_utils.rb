@@ -7,6 +7,8 @@ module ListingIndexViewUtils
     :category_id,
     :latitude,
     :longitude,
+    :distance,
+    :distance_unit,
     :author,
     :description,
     :listing_images,
@@ -54,14 +56,13 @@ module ListingIndexViewUtils
             l[:author][:is_deleted],
             l[:author][:num_of_reviews]
           )
-        else
-          nil
         end
 
       listing_images =
         if includes.include?(:listing_images)
           l[:listing_images].map { |li|
-            ListingImage.new(li[:thumb], li[:small_3x2]) }
+            ListingImage.new(li[:thumb], li[:small_3x2])
+          }
         else
           []
         end
@@ -73,6 +74,8 @@ module ListingIndexViewUtils
         l[:category_id],
         l[:latitude],
         l[:longitude],
+        l[:distance],
+        l[:distance_unit],
         author,
         l[:description],
         listing_images,

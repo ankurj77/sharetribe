@@ -109,9 +109,6 @@ default: &default_settings
   # This setting here is the server wide default, and it's used if no community specific setting is found.
   default_locale: en
 
-  #indian currency symbol
-  currency_symbol: ₹
-
   # Facebook Connect
   # If you want to use Facebook connect, enter the credentials here
   fb_connect_id:
@@ -185,10 +182,6 @@ default: &default_settings
   # To make this work you also need config/translation.yml with wti credentials.
   update_translations_on_every_page_load: false
 
-  # If you have migrated from using ASI to use standalone Sharetribe,
-  # You should set this to true to use ASI based password encryption
-  use_asi_encryptor:
-
   # If you need for some reason change the session key used in cookies, you can do it here.
   # Normally no need to touch this.
   session_key: _sharetribe_session
@@ -203,7 +196,7 @@ default: &default_settings
   # http://fortawesome.github.io/Font-Awesome/
   # If you want to use another icon set than "font-awesome", you can specify it here
   # Currently only othe option is "ss-pika" (a proprietary icon set)
-  icon_pack: "ss-pika"
+  icon_pack: "font-awesome"
 
   # If icon_pack is set to "ss-pika", set the location for the icon pack
   # This setting is irrelevant to Open Source developers, since ss icon pack
@@ -271,6 +264,11 @@ default: &default_settings
   # Delayed job maximum run time in seconds
   delayed_job_max_run_time: 180
 
+  # Optional HTTP basic auth for the entire installation
+  use_http_auth: false
+  http_auth_username: sharetribe
+  http_auth_password: changeme
+
 production: &production_settings
   <<: *default_settings
 
@@ -302,9 +300,6 @@ test:
   # The locale should be "en" for test environment
   # even if you change it for others
   default_locale: en
-
-  # The tests currently work only with ASI encryptor
-  use_asi_encryptor: true
 
   # The domain should be set to lvh.me:9887 (which redirects to localhost)
   # to be able to run the tests with subdomains.

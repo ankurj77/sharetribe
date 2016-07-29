@@ -2,6 +2,7 @@
 module ApplicationHelper
 
   ICON_PACK = APP_CONFIG.icon_pack || "font-awesome"
+
   ICONS = {
     "ss-pika" => {
 
@@ -161,7 +162,7 @@ module ApplicationHelper
     "font-awesome" => {
       "map" => "icon-map-marker",
       "thumbnails" => "icon-th",
-      "grid" => "icon-th",
+      "grid" => "icon-th-large",
       "new_listing" => "icon-plus-sign-alt",
 
       "search"  => "icon-search",
@@ -186,7 +187,7 @@ module ApplicationHelper
       "user" => "icon-user",
       "settings" => " icon-cog",
       "facebook" => "icon-facebook",
-      "invite" => "icon-user-md",
+      "invite" => "icon-user",
       "download" => "icon-download",
       "link" => "icon-link",
       "external_link" => "icon-external-link",
@@ -389,7 +390,7 @@ module ApplicationHelper
       :totalPages => total_pages,
       :url        => url,
       :loaderMsg  => loader_message,
-      :div1       => target_id
+      :targetDiv  => target_id # extra parameter for jquery.pageless.js patch
     }
 
     content_for :extra_javascript do

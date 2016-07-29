@@ -74,21 +74,6 @@ function add_validator_methods() {
     );
 
   $.validator.
-    addMethod("required_when_not_neutral_feedback",
-      function(value, element, param) {
-        if (value == "") {
-          var radioButtonArray = new Array("1", "2", "4", "5");
-          for (var i = 0; i < radioButtonArray.length; i++) {
-            if ($('#grade-' + radioButtonArray[i]).is(':checked')) {
-              return false;
-            }
-          }
-        }
-        return true;
-       }
-    );
-
-  $.validator.
     addMethod( "positive_integer",
       function(value, element, param) {
         var n = ~~Number(value);
@@ -185,15 +170,6 @@ function add_validator_methods() {
     addMethod("number_max", function(value, element, max) {
       return value.length === 0 ? true : toNumber(value) <= max;
     });
-}
-
-function report_analytics_event(params_array) {
-  if (typeof _gaq != 'undefined') {
-    _gaq.push(['_trackEvent'].concat(params_array));
-    if (typeof secondary_analytics_in_use != 'undefined' && secondary_analytics_in_use) {
-      _gaq.push(['b._trackEvent'].concat(params_array));
-    }
-  }
 }
 
 // Initialize code that is needed for every view
@@ -322,7 +298,7 @@ function initialize_send_message_form(locale) {
     },
     submitHandler: function(form) {
       disable_and_submit(form_id, form, "false", locale);
-      report_analytics_event(["message", "sent"]);
+      report_analytics_event("message", "sent");
     }
   });
 }
@@ -337,7 +313,7 @@ function initialize_send_person_message_form(locale) {
     },
     submitHandler: function(form) {
       disable_and_submit(form_id, form, "false", locale);
-      report_analytics_event(["message", "sent"]);
+      report_analytics_event("message", "sent");
     }
   });
 }
@@ -363,7 +339,7 @@ function initialize_listing_view(locale) {
   );
 
   $('#send_comment_button').click(function() {
-    report_analytics_event(["listing", "commented"]);
+    report_analytics_event("listing", "commented");
   });
 }
 
@@ -377,7 +353,6 @@ function initialize_accept_transaction_form(
   minimum_price_message) {
 
   auto_resize_text_areas("text_area");
-  style_action_selectors();
 
   if (commission_percentage != null) {
     if (form_type === "simple") {
@@ -481,49 +456,9 @@ function update_complex_form_price_fields(commissionPercentage, serviceFeeVat) {
   $("#total").text(youWillGet.toFixed(2) + euro);
 }
 
-function initialize_confirm_transaction_form() {
-  style_action_selectors();
-}
-
-function style_action_selectors() {
-  $(".conversation-action").each(function() {
-    $(this).find('label').hide();
-    $(this).find('.conversation-action').each(
-      function() {
-        $(this).removeClass('hidden');
-        $(this).click(
-          function() {
-            var action = $(this).attr('id');
-            $(this).siblings().removeClass('accept').removeClass('reject').removeClass('confirm').removeClass('cancel');
-
-            // Show or hide description text
-            $(".confirm-description").addClass('hidden');
-            $(".cancel-description").addClass('hidden');
-            $("." + action + "-description").removeClass('hidden');
-
-            // Show or hide price field
-            $(".conversation-price").addClass('hidden');
-            $("." + action +  "-price").removeClass('hidden');
-
-            // Show or hide payout details missing information
-            $(".hidden-accept-form").addClass('hidden');
-            $(".visible-when-" + action).removeClass('hidden');
-
-            $(this).addClass(action);
-            $(".conversation-action").find('input:radio[id=' + $(this).attr('name') + ']').attr('checked', true);
-            $("#conversation_message_attributes_action").val(action);
-            $("#conversation_status").val(action + 'ed');
-          }
-        );
-      }
-    );
-  });
-}
-
 function initialize_give_feedback_form(locale, grade_error_message, text_error_message) {
   auto_resize_text_areas("text_area");
   $('textarea').focus();
-  style_grade_selectors();
   var form_id = "#new_testimonial";
   $(form_id).validate({
     errorPlacement: function(error, element) {
@@ -543,24 +478,6 @@ function initialize_give_feedback_form(locale, grade_error_message, text_error_m
     submitHandler: function(form) {
       disable_and_submit(form_id, form, "false", locale);
     }
-  });
-}
-
-function style_grade_selectors() {
-  $(".feedback-grade").each(function() {
-    $(this).find('label').hide();
-    $(this).find('.grade').each(
-      function() {
-        $(this).removeClass('hidden');
-        $(this).click(
-          function() {
-            $(this).siblings().removeClass('negative').removeClass('positive');
-            $(this).addClass($(this).attr('id'));
-            $(".feedback-grade").find('input:radio[id=' + $(this).attr('name') + ']').attr('checked', true);
-          }
-        );
-      }
-    );
   });
 }
 
@@ -601,7 +518,7 @@ function initialize_signup_form(locale, username_in_use_message, invalid_usernam
     onkeyup: false, //Only do validations when form focus changes to avoid exessive ASI calls
     submitHandler: function(form) {
       disable_and_submit(form_id, form, "false", locale);
-      report_analytics_event(['user', "signed up", "normal form"]);
+      report_analytics_event('user', "signed up", "normal form");
     }
   });
 }

@@ -209,9 +209,9 @@ it:
         default_search_type: ~
         keyword_search: ~
         location_search: ~
-        select_distance_unit: ~
-        km: ~
-        miles: ~
+        select_distance_unit: "Mostra la distanza in %{distance_units_selector}"
+        km: km
+        miles: miglia
         listing_preferences: ~
         transaction_preferences: ~
         show_listing_publishing_date: ~
@@ -320,7 +320,7 @@ it:
         master_merchant_id: ~
         commission_from_seller: ~
       paypal_account:
-        paypal_admin_account: "Sistema dei pagamenti - PayPal"
+        paypal_admin_account: Pagamenti
     custom_fields:
       edit:
         edit_listing_field: ~
@@ -443,12 +443,12 @@ it:
       units_title: ~
       units_desc: ~
       units:
-        piece: ~
-        hour: ~
+        piece: "Per unità"
+        hour: All'ora
         day: "Al giorno"
-        night: ~
-        week: ~
-        month: ~
+        night: "Per notte"
+        week: "Per settimana"
+        month: "Per mese"
       can_not_find: ~
       add_custom_unit: ~
       delete_custom_unit: ~
@@ -458,10 +458,10 @@ it:
         selector_label_heading: ~
         label_placeholder: ~
         selector_placeholder: ~
-        per: ~
+        per: Per
         unit_type:
           heading: ~
-          quantity_label: ~
+          quantity_label: "Quantità (per pezzo, per kg, per persona, per tour di 2 ore...)"
           time_label: ~
     paypal_accounts:
       marketplace_paypal_integration: "Integrazione PayPal"
@@ -528,7 +528,7 @@ it:
       item: ~
       favor: servizi
       rideshare: ~
-      housing: ~
+      housing: Spazi
       tools: Strumenti
       sports: Sport
       music: Musica
@@ -585,9 +585,7 @@ it:
       paypal_fee_info: "* Esclusi i <a id='%{fee_info_link_id}' href='#'>costi di transazione di PayPal</a>"
       shipping_price_label: ~
     confirm:
-      confirm_description: |-
-          Se il tuoordine è stato completato, dovresti confermarla.
-          Successivamente puoi dare il tuo feedback all'altra parte.
+      confirm_description: "Se il tuo ordine è stato completato, dovresti confermarlo. Successivamente puoi dare il tuo feedback all'altra parte."
       cancel_description: ~
       cancel_payed_description: "Se la tua richiesta è stata accettata ma ci stai ripensando, puoi ancora cancellare la richiesta prima del pagamento."
       canceling_payed_transaction: "Cancella la transazione"
@@ -625,7 +623,7 @@ it:
       accepted_offer: "Offerta accettata"
       rejected_request: "Richiesta respinta"
       rejected_offer: "Offerta respinta"
-      confirmed_request: ~
+      confirmed_request: "Ordine segnato come completo"
       confirmed_offer: "Offerta segnata come completata"
       canceled_request: "Ordine cancellato"
       canceled_offer: "Offerta cancellata"
@@ -638,11 +636,11 @@ it:
       favor_request_message_form_title: "Offri aiuto a %{person}"
       housing_offer_message_form_title: "Offri spazio a %{person}"
       housing_request_message_form_title: "Richiedi spazio a %{person}"
-      item_offer_lend_message_form_title: ~
-      item_offer_sell_message_form_title: ~
+      item_offer_lend_message_form_title: "Prestito %{listing} da %{person}"
+      item_offer_sell_message_form_title: "Acquisto %{listing} da %{person}"
       item_offer_give_away_message_form_title: ~
       item_offer_trade_message_form_title: ~
-      item_offer_rent_out_message_form_title: ~
+      item_offer_rent_out_message_form_title: "Noleggiato %{listing} da %{person}"
       item_request_borrow_message_form_title: ~
       item_request_buy_message_form_title: ~
       item_request_take_for_free_message_form_title: ~
@@ -674,7 +672,7 @@ it:
       message_sent_by: "Messaggio inviato da"
       message_sent_to: "Messaggio inviato a"
       send_reply: "Invia risposta"
-      write_a_reply: "Scrivi una risposta:"
+      write_a_reply: "Scrivi un commento"
       conversation_about_listing: "Con %{person} su%{listing}"
       conversation_with_user: ~
       conversation_with: "Conversazione con %{person}"
@@ -707,10 +705,10 @@ it:
           verify: "Non puoi accettare questa transazione in quanto il tuo conto PayPal non è stato ancora verificato. Apri %{paypal_url} per verificare il tuo conto."
           intl: "Non siamo stati in grado di processare il pagamento PayPal in quanto il tuo conto PayPal non ha abilitato un meccanismo di prelievo. Apri %{paypal_url} e accedi al tuo conto per accettare o rifiutare manualmente il pagamento."
       waiting_for_current_user_to_deliver_listing: "In attesa che tu esegua l'ordine ricevuto per %{listing_title}"
-      waiting_for_listing_author_to_deliver_listing: ~
+      waiting_for_listing_author_to_deliver_listing: "In attesa che %{listing_author_name} proceda al completamento dell'ordine per %{listing_title}"
       request_accepted: accettata
       request_rejected: rifiutata
-      request_confirmed: ~
+      request_confirmed: Completato
       request_canceled: Cancellato
       request_paid: "Pagamento riuscito"
       request_preauthorized: "Pagamento autorizzato"
@@ -758,15 +756,15 @@ it:
       save: ~
     show:
       payout_details: ~
-      first_name: ~
-      last_name: ~
+      first_name: Nome
+      last_name: Cognome
       email: "Indirizzo email"
-      phone: ~
+      phone: "Numero di telefono"
       address_street_address: Indirizzo
       address_postal_code: "CAP/Codice Postale"
       address_locality: Città
       address_region: Regione
-      date_of_birth: ~
+      date_of_birth: "Data di nascita"
       ssn: ~
       routing_number: ~
       account_number: ~
@@ -775,14 +773,14 @@ it:
       new_credit_card_payment: ~
       payment_receiver: ~
       cardholder_name: ~
-      credit_card_number: ~
-      cvv: ~
-      credit_card_expiration_date: ~
+      credit_card_number: "Numero di carta di credito"
+      cvv: CVV
+      credit_card_expiration_date: "Data di scadenza della carta di Credito"
       confirm_payment: ~
       exp: ~
   feedback:
     feedback_subject: ~
-    feedback_body: ~
+    feedback_body: "%{author_name_and_email} ha inviato il seguente feedback da %{service_name}"
     unlogged_user: ~
     anonymous_user: ~
   preauthorize_payments:
@@ -814,7 +812,7 @@ it:
       you_have_not_yet_accepted_or_rejected_request: "Non hai ancora accettato o rifiutato la richiesta '%{title}' che hai ricevuto il %{date}"
       show_thread: "Mostra la conversazione"
     braintree_account_approved:
-      account_ready: ~
+      account_ready: "Account abilitato a ricevere pagamenti"
       message: "Le tue informazioni di pagamento sono state confermate e ora sei pronto per ricevere pagamenti su %{service_name}."
     confirm_reminder:
       you_have_not_yet_confirmed_or_canceled_request: "Non hai ancora confermato o cancellato la richiesta %{request_link}. Se la richiesta è stata completata, dovresti confermarla. Successivamente puoi dare il tuo feedback a %{other_party_given_name}."
@@ -874,7 +872,7 @@ it:
       message_not_displaying_correctly: "L'email non è correttamente visibile?"
       view_it_in_your_browser: "Vedi nel tuo browser"
       or: o
-      unsubscribe_from_these_emails: ~
+      unsubscribe_from_these_emails: "Rimuovi la sottoscrizione da queste email"
     conversation_status_changed:
       has_accepted_your_offer: "%{accepter} ha accettato la tua offerta %{listing}."
       has_accepted_your_request: "%{accepter} ha accettato la tua richiesta %{listing}."
@@ -906,8 +904,8 @@ it:
       you_have_a_new_message: "Un nuovo messaggio in %{service_name} da %{sender_name}"
     new_payment:
       new_payment: "Hai ricevuto un nuovo pagamento"
-      price_per_unit_type: ~
-      quantity: ~
+      price_per_unit_type: "Prezzo per %{unit_type}"
+      quantity: "Quantità:"
       you_have_received_new_payment: "Hai ricevuto <b>%{payment_sum}</b> per <b>%{listing_title}</b> da %{payer_full_name}. Ecco la tua ricevuta."
     paypal_new_payment:
       paypal_gateway_fee: "Commissione di PayPal"
@@ -922,9 +920,9 @@ it:
       receipt_of_payment: "Ricevuta di pagamento"
       you_have_made_new_payment: "Hai pagato <b>%{payment_sum}</b> per <b>%{listing_title}</b> a %{recipient_full_name}. Ecco la ricevuta del pagamento."
       product: Prodotto
-      price_per_unit_type: ~
+      price_per_unit_type: "Prezzo per %{unit_type}"
       duration: "Periodo:"
-      quantity: ~
+      quantity: "Quantità:"
       subtotal: "Subtotale:"
       total: Totale
       price: Prezzo
@@ -980,14 +978,14 @@ it:
       welcome_email_subject_for_marketplace_creator: ~
       welcome_to_marketplace_creator: ~
       congrats_for_creating_your_marketplace: ~
-      here_is_your_account_information: ~
-      your_email_address: ~
+      here_is_your_account_information: "Qui ci sono le informazioni del tuo account"
+      your_email_address: "Indirizzo email usato per il login:"
       your_marketplace_address: ~
       your_marketplace_admin_area: ~
       just_follow_details: ~
       we_will_guide_you_along_the_way: ~
       are_you_new_to_online_marketplaces: ~
-      have_questions: ~
+      have_questions: "Ci sono domande?"
       our_happiness_team_is_here_to_help: ~
       love: ~
       sharetribe_crew: ~
@@ -1067,19 +1065,19 @@ it:
       has_accepted_receive_item: "%{offerer_name} ha accetato di ricevere %{listing_title} a %{requester_name} %{time_ago}."
       has_accepted_sell_item: "%{offerer_name} ha accetato di vendere %{listing_title} a %{requester_name} %{time_ago}."
       has_accepted_buy_item: "%{offerer_name} ha accetato di comprare %{listing_title} a %{requester_name} %{time_ago}."
-      has_accepted_trade_item: ~
+      has_accepted_trade_item: "%{offerer_name} ha accettato di scambiare %{listing_title} con %{requester_name} %{time_ago}."
       has_accepted_sell_housing: "%{offerer_name} ha accetato di vendere %{listing_title} a %{requester_name} %{time_ago}."
       has_accepted_buy_housing: "%{offerer_name} ha accetato di comprare %{listing_title} da %{requester_name} %{time_ago}."
       has_accepted_rent_out_housing: "%{offerer_name} ha accettato di affittare %{listing_title} a %{requester_name} %{time_ago}."
       has_accepted_rent_housing: "%{offerer_name} ha accettato di prendere in affitto %{listing_title} a %{requester_name} %{time_ago}."
-      has_accepted_favor: ~
+      has_accepted_favor: "%{offerer_name} ha accettato di offrire %{listing_title} a %{requester_name}%{time_ago}"
       has_accepted_rideshare: ~
     join:
       joined_kassi: ~
     login:
       logged_in_to_kassi: ~
     comment:
-      commented: ~
+      commented: "%{commenter_name} ha commentato l'annuncio %{listing_title} %{time_ago}"
       offer_partitive: ~
       request_partitive: ~
   header:
@@ -1095,10 +1093,10 @@ it:
     contact_us: Contattaci
     profile: Profilo
     manage_listings: "Gestione annunci"
-    invite: "Invita nuovi utenti"
+    invite: "Invita amici ad unirsi"
     login: ~
     signup: Registrati
-    menu: ~
+    menu: Menù
   homepage:
     additional_private_listings_slate:
       additionally_one_private_offer_exists: "Inoltre c'è <b>un'altra offerta</b>,  "
@@ -1136,7 +1134,7 @@ it:
       min: ~
       max: ~
     event_feed:
-      latest_events: ~
+      latest_events: "Cosa sta accadendo.."
     grid_item:
       processing_uploaded_image: "(Elaborazione immagine in corso...)"
     index:
@@ -1167,20 +1165,21 @@ it:
       no_reviews: "Nessuna recensione"
       no_image: "Nessuna immagine"
       filter: Filtri
-      this_is_private_community: ~
+      this_is_private_community: "Devi registrarti prima di poter vedere il contenuto"
     invitation_form:
       email: "Indirizzo/i email"
       message: "Un messaggio personale"
       send_invitation: "Invia un invito"
-      add_email_addresses_description: ~
+      add_email_addresses_description: "Aggiungi nel campo qui sotto, l'indirizzo email delle persone che vuoi invitare. Se vuoi inserire più indirizzi, separali con una virgola."
       add_lots_of_email_addresses: ~
       this_article_link: ~
       invitation_emails_field_placeholder: "amico1@esempio.com, amico2@esempio.com, ..."
-      invitation_message_field_placeholder: ~
+      invitation_message_field_placeholder: "Mi sono unito a questo fantastico marketplace. Dovresti farlo pure tu!"
       errors_in_emails: "Controlla che siano email alide, separate da virgola."
     list_item:
       review: recensione
       reviews: recensioni
+      distance_away: "%{distance} %{distance_unit} di distanza"
     news_item:
       show_less: "Mostra di meno"
       show_more: "Mostra di più"
@@ -1290,7 +1289,7 @@ it:
       comment_sent: "Commento inviato"
       confirmation_link_is_wrong_or_used: "Il link di conferma è già stato utilizzato o altrimenti è compromesso. Prova ad accedere nuovamente, o inviaci un'email se il problema persiste."
       additional_email_confirmed: "L'email specificata è ora confermata."
-      could_not_get_email_from_facebook: ~
+      could_not_get_email_from_facebook: "Non è possibile ricevere l'indirizzo email da Facebook, e non è possibile creare un account senza indirizzo email."
       create_new_listing: "Crea una nuova inserzione"
       create_one_here: "creane uno qui"
       email_confirmation_sent_to_new_address: "l'email di conferma è stata inviata al nuovo indirizzo email"
@@ -1351,6 +1350,7 @@ it:
       request_rejected: "Richiesta respinta"
       request_canceled: "Ordine cancellato."
       message_sent: "Messaggio inviato"
+      message_not_sent: "Spedizione del messaggio fallita. Riprova."
       this_content_is_not_available_in_this_community: "Questo contenuto non è disponibile in questa comunità."
       unknown_error: "Errore sconosciuto. Usa il link Contattaci per inviarci i dettagli di quanto accaduto."
       update_error: "È avvenuto un errore mentre stavi aggiornando le tue informazioni, prova nuovamente"
@@ -1388,7 +1388,7 @@ it:
       can_not_login_with_private_user: ~
       can_not_delete_email: "Non puoi rimuovere l'indirizzo email"
       user_does_not_have_email_to_delete: "Non hai l'indirizzo email che stai cercando di rimuovere"
-      email_deleted: "La email %email% è stata rimossa con successo dal suo account."
+      email_deleted: "Email rimossa"
       payment_details_add_successful: ~
       payment_details_add_error: ~
       listing_author_payment_details_missing: "Ti preghiamo di contattare l'autore, cliccando sul pulsante 'contatta' che trovi più in basso. Deve aggiornare i dettagli di pagamento per poter ricevere pagamenti."
@@ -1428,7 +1428,7 @@ it:
       show_in_updates_email_error: "Non è possibile raggiungere il server. Prova con un refresh della pagina (F5)"
       show_in_updates_email_success: "Questa inserzione sarà mostrato nel prossimo aggiornamento automatico delle inserzioni inviato via e-mail agli utenti"
     map:
-      open_in_google_maps: ~
+      open_in_google_maps: "Apri in Google Maps"
     error:
       something_went_wrong: ~
     follow_links:
@@ -1471,7 +1471,7 @@ it:
         processing: "In attesa..."
         loading_image: Caricamento...
         image_uploading_in_progress: ~
-        processing_takes_a_while: ~
+        processing_takes_a_while: "Tutte le immagine sono state caricate! Ci vorrà un po' di tempo per finire il processo, comunque puoi già l'inserzione ed uscire se lo desideri."
         this_may_take_a_while: "(potrebbe richiedere del tempo)"
         percentage_loaded: ~
         uploading_failed: "Il caricamento dell'immagine non è andato a buon fine."
@@ -1516,7 +1516,7 @@ it:
         rent_out: Noleggiare
         request_type: "Tipo di richiesta"
         sell: Vendere
-        share_for_free: ~
+        share_for_free: "Condiviso gratuitamente"
         accept_for_free: ~
         trade: Scambiare
       tag_list:
@@ -1571,7 +1571,7 @@ it:
       rents: Affittare
       rideshares: Passaggio
       sells: Vendere
-      share_for_frees: ~
+      share_for_frees: "Condiviso gratuitamente"
       accept_for_frees: ~
       trades: Scambiare
     listing_actions:
@@ -1594,11 +1594,11 @@ it:
       payment_settings_link: "Impostazioni dei pagamenti"
       community_not_configured_for_payments_admin: ~
     quantity:
-      hour: ~
+      hour: "Numero di ore:"
       day: "Numero di giorni:"
-      night: ~
-      week: ~
-      month: ~
+      night: "Numero di notti:"
+      week: "Numero di settimane:"
+      month: "Numero di mesi:"
       custom: ~
     quantity_placeholder: ~
     please_comment: Commenta
@@ -1648,11 +1648,11 @@ it:
       pickup_no_price: ~
     unit_types:
       piece: ~
-      hour: ~
+      hour: ora
       day: giorno
       night: ~
-      week: ~
-      month: ~
+      week: settimana
+      month: mese
     verification_required:
       verification_required: "Richiesta verifica"
   listing_conversations:
@@ -1692,7 +1692,7 @@ it:
     content_too_long: ~
   okl:
     member_id: "ID utente"
-    member_id_or_email: ~
+    member_id_or_email: "Numero ID o email"
   payments:
     new:
       new_payment: "Hai ricevuto un nuovo pagamento"
@@ -1725,7 +1725,7 @@ it:
     paypal_receive_funds_info_label: "Raramente accade che non è possibile collegare il conto PayPal."
     paypal_receive_funds_info: "Se avviene un errore tentando di collegare il tuo Conto PayPal a %{service_name}, il tuo conto potrebbe essere obsoleto, e aver bisogno di un aggiornamento ad un Conto Premier a questo link: %{upgrade_paypal_account_link}. La cosa migliore è contattare il servizio clienti PayPal e farsi guidare."
     upgrade_paypal_account_link_text: "Aggiorna l'account PayPal."
-    admin_account_not_connected: "Non è possibile utilizzare il sistema di pagamenti di %{service_name} e ricevere pagamenti, se prima non è stato settato. per favore %{contact_admin_link} per i dettagli."
+    admin_account_not_connected: "Non è possibile utilizzare il sistema di pagamenti di %{service_name} e ricevere pagamenti, se prima non è stato settato. Per favore %{contact_admin_link} per i dettagli."
     contact_admin_link_text: "contatta l'amministratore della piattaforma di marketplace"
     you_are_ready_to_accept_payments: "Ora sei pronto per accettare i pagamenti!"
     commission: "%{commission} %"
@@ -1736,7 +1736,7 @@ it:
       admin_account_not_connected: "Non puoi connettere il tuo conto PayPal perchè l'amministratore della piattaforma non ha terminato la configurazione di PayPal."
       paypal_account_email: "Collega il tuo conto PayPal"
       paypal_account_email_placeholder: "Il tuo indirizzo email di PayPal"
-      paypal_account_email_info_text: "Se non hai un account paypal, puoi crearne uno %{create_paypal_account}. Raramente, può accadere un errore quando connetti il tuo account, ciò può signficare che il tuo account PayPal è obsoleto e devi aggiornare ad un account Business: %{upgrade_paypal_account}. Ti consigliamo comunque di sentire il servizio clienti di PayPal, o di contattarci in modo da poterti aiutare."
+      paypal_account_email_info_text: "Se non hai un account Paypal, puoi crearne uno %{create_paypal_account}. Raramente, può accadere un errore quando connetti il tuo account, ciò può signficare che il tuo account PayPal è obsoleto e devi aggiornarlo ad un account Business: %{upgrade_paypal_account}. Ti consigliamo comunque di sentire il servizio clienti di PayPal, o di contattarci in modo da poterti aiutare."
       create_paypal_account: "Cliccando qui"
       upgrade_paypal_account: "Accedi al tuo conto Paypal"
       paypal_account_billing_agreement: "Concedi a %{service_name} l'autorizzazione ad applicare una commissione"
@@ -1783,7 +1783,7 @@ it:
       commission_payment_name: "Pagamento della commissione per %{listing_title}"
       commission_payment_description: "La piattaforma %{service_name} ha preso questa commissione dalla transazione che riguarda il seguente annuncio: %{listing_title}"
     wait_while_loading: "Per favore attendi."
-    chatting_with_paypal: ~
+    chatting_with_paypal: "Stiamo comunicando con PayPal"
   people:
     edit_links:
       activate: Attiva
@@ -1803,13 +1803,16 @@ it:
       email_is_in_use: "L'email che hai fornito è già utilizzata."
       email_is_in_use_or_not_allowed: "Questa email non è valida per accedere a questa comunità o è già in uso. Per favore utilizza un indirizzo email che è associato con questa comunità (leggi le istruzioni qui sopra). Se ancora non ti è possibile accedere, inviaci un'email."
       email_not_allowed: ~
+      email_restriction_instructions:
+        one: "L'accesso a %{service_name} è ristretto. per unirti hai bisogno di un %{allowed_emails}"
+        other: "L'accesso a %{service_name} è ristretto. Per unirti hai bisogno di un indirizzo email titolato ad un irti."
       family_name: Cognome
       given_name: Nome
       i_accept_the: "Accetto i"
       invalid_invitation_code: "Questo codice di invito non è valido."
       invitation_code: "Codice di invito"
       not_required: ", non richiesto"
-      notification_is_mandatory: ~
+      notification_is_mandatory: "È necessario scegliere almeno un indirizzo e-mail per ricevere le notifiche. Se non vuoi ricevere email da %{service_name}, controlla la configurazione delle notifiche."
       organization_name: "Nome attività"
       password_again: "Conferma password"
       show_my_name_to_others: "Mostra il mio vero nome agli altri utenti di %{service_name}"
@@ -1925,8 +1928,8 @@ it:
       change: Cambia
       confirm_new_password: "Conferma la nuova password"
       delete_account: "Elimina account"
-      delete_account_button: "Eliminare definitivamente il mio account"
-      delete_account_confirmation_popup: "Sei sicuro di voler eliminare il tuo account e permanentemente perdere tutte le informazioni in esso contenute? La cancellazione dell'account non può essere revocata."
+      delete_account_button: "Elimina definitivamente il mio account"
+      delete_account_confirmation_popup: "Sei sicuro di voler eliminare il tuo account e perdere in modo permanente tutte le informazioni in esso contenute? La cancellazione dell'account non è reversibile."
       email_addresses: "Indirizzi email"
       new_email: "Nuovo indirizzo email"
       delete_all_memberships: ~
@@ -1936,7 +1939,7 @@ it:
       new_password: "Nuova password"
       save: Salva
       these_fields_are_shown_only_to_you: "Lo username è mostrato nel tuo profilo a meno che non abbia fornito il tuo nome. Altre informazioni sono mostrate solo a te."
-      email_already_confirmed: ~
+      email_already_confirmed: "Il tuo indirizzo email è già confermato."
       email:
         address_title: "Indirizzo email"
         remove_title: Rimuovi
@@ -2031,7 +2034,7 @@ it:
       slightly_better_than_expected: "Leggermente meglio del previsto"
       slightly_less_than_expected: "Leggermente peggio del previsto"
       textual_feedback: "Come è andata?"
-      this_will_be_shown_in_profile: ~
+      this_will_be_shown_in_profile: "Il feedback che dai sarà visibile a tutti i membri nel profilo di %{person}. Questo è un'aiuto per valutare se %{person} è una persona affidabile."
       positive: Positivo
       negative: Negativo
       default_textual_feedback: "Tutto è andato a buon fine, grazie mille!"
@@ -2115,6 +2118,9 @@ it:
       one: "%{count} giorno"
       other: "%{count} giorni"
     time_to:
+      hours:
+        one: "%{count} ora"
+        other: "%{count} ore"
       days:
         one: "%{count} giorno"
         other: "%{count} giorni"
@@ -2125,7 +2131,7 @@ it:
       quantity: ~
       subtotal: "Subtotale:"
       shipping-price: ~
-    price_per_quantity: ~
+    price_per_quantity: "Prezzo per %{unit_type}"
     price: ~
     quantity: ~
     unit_price: ~

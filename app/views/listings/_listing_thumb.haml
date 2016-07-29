@@ -1,15 +1,15 @@
-- frontpage_fragment_cache("grid_item", listing) do 
+- frontpage_fragment_cache("grid_item", listing) do
   .listing-thumb
     .thumb-image
       = link_to(listing_path(listing.url)) do
-        = image_tag listing.thumb_image_url, {:alt => "asd", :class => ""}
+        = image_tag listing.thumb_image_url, {:alt => "No Image", :class => ""}
     .clear
     .thumb-name
       = link_to(listing.title, listing_path(listing.url), {:style => "color: #014f54;"})
     .clear
     - if listing.price
       %span.thumb-price
-        = APP_CONFIG.currency_symbol + humanized_money(listing.price).upcase
+        = humanized_money_with_symbol(listing.price).upcase
         - price_unit = price_quantity_slash_unit(listing)
       - if !price_unit.blank?
         - price_text = " " + price_unit

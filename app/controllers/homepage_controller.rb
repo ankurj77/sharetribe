@@ -30,7 +30,6 @@ class HomepageController < ApplicationController
 
     listing_shape_param = params[:transaction_type]
 
-    all_shapes = shapes.get(community_id: @current_community.id)[:data]
     selected_shape = all_shapes.find { |s| s[:name] == listing_shape_param }
 
     filter_params[:listing_shape] = Maybe(selected_shape)[:id].or_else(nil)
@@ -51,24 +50,42 @@ class HomepageController < ApplicationController
         raise ArgumentError.new("Unknown view_type #{@view_type}")
       end
 
-    search_result = find_listings(params, per_page, compact_filter_params, includes.to_set)
+    main_search = location_search_available ? MarketplaceService::API::Api.configurations.get(community_id: @current_community.id).data[:main_search] : :keyword
+    location_search_in_use = main_search == :location
+
+    search_result = find_listings(params, per_page, compact_filter_params, includes.to_set, location_search_in_use)
 
     shape_name_map = all_shapes.map { |s| [s[:id], s[:name]]}.to_h
+
+    if @view_type == 'map'
+      coords = Maybe(params[:boundingbox]).split(',').or_else(nil)
+      viewport = if coords
+        sw_lat, sw_lng, ne_lat, ne_lng = coords
+        { boundingbox: { sw: [sw_lat, sw_lng], ne: [ne_lat, ne_lng] } }
+      elsif params[:lc].present?
+        { center: params[:lc].split(',') }
+      else
+        Maybe(@current_community.location)
+          .map { |l| { center: [l.latitude, l.longitude] }}
+          .or_else(nil)
+      end
+    end
 
     if request.xhr? # checks if AJAX request
       search_result.on_success { |listings|
         @listings = listings # TODO Remove
 
         if @view_type == "grid" then
-          render :partial => "grid_item", :collection => @listings, :as => :listing
+          render partial: "grid_item", collection: @listings, as: :listing, locals: { show_distance: location_search_in_use }
+        elsif location_search_in_use
+          render partial: "list_item_with_distance", collection: @listings, as: :listing, locals: { shape_name_map: shape_name_map, testimonials_in_use: @current_community.testimonials_in_use, show_distance: location_search_in_use }
         else
-          render :partial => "list_item", :collection => @listings, :as => :listing, locals: { shape_name_map: shape_name_map, testimonials_in_use: @current_community.testimonials_in_use }
+          render partial: "list_item", collection: @listings, as: :listing, locals: { shape_name_map: shape_name_map, testimonials_in_use: @current_community.testimonials_in_use }
         end
       }.on_error {
         render nothing: true, status: 500
       }
     else
-      main_search = (feature_enabled?(:location_search) && search_engine == :zappy) ? MarketplaceService::API::Api.configurations.get(community_id: @current_community.id).data[:main_search] : :keyword
       search_result.on_success { |listings|
         @listings = listings
         render locals: {
@@ -79,7 +96,9 @@ class HomepageController < ApplicationController
                  shape_name_map: shape_name_map,
                  testimonials_in_use: @current_community.testimonials_in_use,
                  listing_shape_menu_enabled: listing_shape_menu_enabled,
-                 main_search: main_search }
+                 main_search: main_search,
+                 location_search_in_use: location_search_in_use,
+                 viewport: viewport }
       }.on_error { |e|
         flash[:error] = t("homepage.errors.search_engine_not_responding")
         @listings = Listing.none.paginate(:per_page => 1, :page => 1)
@@ -91,7 +110,9 @@ class HomepageController < ApplicationController
                  shape_name_map: shape_name_map,
                  testimonials_in_use: @current_community.testimonials_in_use,
                  listing_shape_menu_enabled: listing_shape_menu_enabled,
-                 main_search: main_search }
+                 main_search: main_search,
+                 location_search_in_use: location_search_in_use,
+                 viewport: viewport }
       }
     end
   end
@@ -108,7 +129,7 @@ class HomepageController < ApplicationController
 
   private
 
-  def find_listings(params, listings_per_page, filter_params, includes)
+  def find_listings(params, listings_per_page, filter_params, includes, location_search_in_use)
     Maybe(@current_community.categories.find_by_url_or_id(params[:category])).each do |category|
       filter_params[:categories] = category.own_and_subcategory_ids
       @selected_category = category
@@ -133,12 +154,18 @@ class HomepageController < ApplicationController
     dropdowns = filter_params[:custom_dropdown_field_options].map { |dropdown_field| dropdown_field.merge(type: :selection_group, operator: :or) }
     numbers = numeric_search_params.map { |numeric| numeric.merge(type: :numeric_range) }
 
+    coordinates = Maybe(params[:lc]).map { search_coordinates(params[:lc]) }.or_else({})
+    distance_unit = (location_search_in_use && MarketplaceService::API::Api.configurations.get(community_id: @current_community.id).data[:distance_unit] == :metric) ? :km : :miles
+
     search = {
       # Add listing_id
       categories: filter_params[:categories],
       listing_shape_ids: Array(filter_params[:listing_shape]),
       price_cents: filter_params[:price_cents],
       keywords: filter_params[:search],
+      latitude: coordinates[:latitude],
+      longitude: coordinates[:longitude],
+      distance_unit: distance_unit,
       fields: checkboxes.concat(dropdowns).concat(numbers),
       per_page: listings_per_page,
       page: Maybe(params)[:page].to_i.map { |n| n > 0 ? n : 1 }.or_else(1),
@@ -235,5 +262,14 @@ class HomepageController < ApplicationController
 
   def shapes
     ListingService::API::Api.shapes
+  end
+
+  def search_coordinates(latlng)
+    lat, lng = latlng.split(',')
+    if(lat.present? && lng.present?)
+      return { latitude: lat, longitude: lng }
+    else
+      ArgumentError.new("Format of latlng coordinate pair \"#{latlng}\" wasn't \"lat,lng\" ")
+    end
   end
 end

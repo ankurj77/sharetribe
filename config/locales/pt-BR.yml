@@ -224,9 +224,9 @@ pt-BR:
         default_search_type: ~
         keyword_search: ~
         location_search: ~
-        select_distance_unit: ~
-        km: ~
-        miles: ~
+        select_distance_unit: "Mostrar a distância em %{distance_units_selector}"
+        km: km
+        miles: milhas
         listing_preferences: "Preferências de anúncios"
         transaction_preferences: "Transação - preferências"
         show_listing_publishing_date: "Data de publicação de exibição da lista na página de anúncio"
@@ -1206,6 +1206,7 @@ pt-BR:
     list_item:
       review: avaliação
       reviews: avaliações
+      distance_away: "%{distance} %{distance_unit} de distância"
     news_item:
       show_less: "Mostrar menos"
       show_more: Programar
@@ -1376,6 +1377,7 @@ pt-BR:
       request_rejected: "Pedido rejeitado"
       request_canceled: "Pedido cancelado"
       message_sent: "Mensagem enviada"
+      message_not_sent: "O envio de mensagem falhou. Por favor tente novamente."
       this_content_is_not_available_in_this_community: "Este conteúdo não está disponível"
       unknown_error: "Erro desconhecido. Por favor use o link Fale conosco para enviar detalhes sobre o que aconteceu."
       update_error: "Ocorreu um erro ao tentar atualizar as suas informações, por favor, tente novamente"
@@ -2119,7 +2121,7 @@ pt-BR:
       december: Dez
     today: Hoje
     clear: Limpar
-    format: dd/mm/aaaa
+    format: dd/mm/yyyy
   time:
     formats:
       short: "%e. %b %Y hora %H:%M"

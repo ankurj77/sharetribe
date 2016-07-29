@@ -26,17 +26,15 @@ module ListingIndexService::Search
 
     def search(community_id:, search:, includes: nil)
       included_models = includes.map { |m| INCLUDE_MAP[m] }
-      search_params = format_params(search)
 
       if DatabaseSearchHelper.needs_db_query?(search) && DatabaseSearchHelper.needs_search?(search)
         return Result::Error.new(ArgumentError.new("Both DB query and search engine would be needed to fulfill the search"))
       end
 
       if DatabaseSearchHelper.needs_search?(search)
-        # TODO: is out-of-bounds check necessary here?
         begin
           res = @conn.get do |req|
-            req.url("/api/v1/marketplace/#{community_id}/listings", search_params)
+            req.url("/api/v1/marketplace/#{community_id}/listings", format_params(search))
             req.headers['Authorization'] = "apikey key=#{API_KEY}"
           end
           Result::Success.new(parse_response(res.body, includes))
@@ -54,37 +52,75 @@ module ListingIndexService::Search
     private
 
     def format_params(original)
+      search_params =
+        if(original[:latitude].present? && original[:longitude].present?)
+          { :'search[lat]' => original[:latitude],
+            :'search[lng]' => original[:longitude],
+            :'search[distance_unit]' => original[:distance_unit]
+          }
+        else
+          { :'search[keywords]' => original[:keywords]}
+        end
+
+      custom_fields = Maybe(original[:fields]).map { |fields|
+        fields.select { |f| [:numeric_range, :selection_group].include?(f[:type]) }
+        fields.map { |f|
+          if f[:type]  == :numeric_range
+            [:"custom[#{f[:id]}]", "double:#{f[:value].first}:#{f[:value].last}"]
+          else
+            [:"custom[#{f[:id]}]", "opt:#{f[:operator]}:#{f[:value].join(",")}"]
+          end
+        }.to_h
+      }.or_else({})
+
       {
-       :'search[keywords]' => original[:keywords],
        :'page[number]' => original[:page],
        :'page[size]' => original[:per_page],
-       :'filter[price_min]' => original[:price_min],
-       :'filter[price_max]' => original[:price_max],
+       :'filter[price_min]' => Maybe(original[:price_cents]).map{ |p| p.min }.or_else(nil),
+       :'filter[price_max]' => Maybe(original[:price_cents]).map{ |p| p.max }.or_else(nil),
        :'filter[omit_closed]' => !original[:include_closed],
-       :'filter[listings_shape_ids]' => Maybe(original[:listing_shape_ids]).join(",").or_else(nil),
+       :'filter[listing_shape_ids]' => Maybe(original[:listing_shape_ids]).join(",").or_else(nil),
        :'filter[category_ids]' => Maybe(original[:categories]).join(",").or_else(nil),
        :'search[locale]' => original[:locale]
-      }.compact
+      }.merge(search_params).merge(custom_fields).compact
     end
 
     def listings_from_ids(id_obs, includes)
       # TODO: use pluck instead of instantiating the ActiveRecord objects completely, for better performance
       # http://collectiveidea.com/blog/archives/2015/03/05/optimizing-rails-for-memory-usage-part-3-pluck-and-database-laziness/
 
-      ids = id_obs.map { |r| r['id'] }
+      l_ids = id_obs.map { |r| r['id'] }
+      data_by_id =  Hash[id_obs.map { |m| [m['id'].to_i, m] }]
 
-      Listing
-        .where(id: ids)
-        .order("field(listings.id, #{ids.join ','})")
-        .map {
-          |l| ListingIndexService::Search::Converters.listing_hash(l, includes)
-        }
+      Maybe(l_ids).map { |ids|
+        Listing
+          .where(id: ids)
+          .order("field(listings.id, #{ids.join ','})")
+          .map { |l|
+            distance_hash = parse_distance(data_by_id[l.id])
+            ListingIndexService::Search::Converters.listing_hash(l, includes, distance_hash)
+          }
+      }.or_else([])
     end
 
     def parse_response(res, includes)
-      listings = res["meta"]["total"] > 0 ? listings_from_ids(res["data"], includes) : []
+      listings = listings_from_ids(res["data"], includes)
+
       {count: res["meta"]["total"],
        listings: listings}
+    end
+
+    def parse_distance(data)
+      Maybe(data['meta'])
+        .map{ |m|
+          distance = m['distance']
+          distance_unit = m['distance-unit']
+          if(distance.present? && distance_unit.present?)
+            { distance: distance, distance_unit: distance_unit }
+          else
+            {}
+          end
+        }.or_else({})
     end
   end
 end

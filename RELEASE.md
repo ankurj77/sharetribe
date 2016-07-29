@@ -7,7 +7,9 @@ When you are ready to release a new version, follow these steps:
 2. Update [CHANGELOG.md](CHANGELOG.md)
 
   * Replace the \[Unreleased\] with the version number.
+  * Add current date to version number line.
   * Add a new \[Unreleased\] version.
+  * Add a git diff link to the end of the file, and update the `unreleased` diff link.
 
 3. Update [UPGRADE.md](UPGRADE.md)
 
@@ -62,4 +64,4 @@ When you are ready to release a new version, follow these steps:
   After you have deployed the new version you need to clear Rails cache by running to following command in your production application Rails console:
   ```
 
-8. Announce the new version at Flowdock channel.
+8. Announce the new version at the [Open Source Community Forum](https://www.sharetribe.com/community/)

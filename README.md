@@ -6,8 +6,6 @@ Sharetribe is an open source platform to create your own peer-to-peer marketplac
 
 Would you like to set up your marketplace in one minute without touching code? [Head to Sharetribe.com](https://www.sharetribe.com).
 
-Want to get in touch? Email [info@sharetribe.com](mailto:info@sharetribe.com)
-
 ### Contents
 - [Installation](#installation)
 - [Payments](#payments)
@@ -24,12 +22,10 @@ Want to get in touch? Email [info@sharetribe.com](mailto:info@sharetribe.com)
 
 ## Installation
 
-Note: If you encounter problems with the installation, ask for help from the developer community in our [developer chatroom](https://www.flowdock.com/invitations/de227bdbe48d24c31a6b749933d3b4eca82e307c). When you join, please use threads. Instructions for this and other chat-related things can be found at [Flowdock's chat instructions](https://www.flowdock.com/help/chat).
-
 ### Requirements
 
 Before you get started, the following needs to be installed:
-  * **Ruby**. Version 2.1.2 is currently used and we don't guarantee everything works with other versions. If you need multiple versions of Ruby, [RVM](https://rvm.io//) is recommended.
+  * **Ruby**. Version 2.1.8 is currently used and we don't guarantee everything works with other versions. If you need multiple versions of Ruby, [RVM](https://rvm.io//) is recommended.
   * [**RubyGems**](http://rubygems.org/)
   * **Bundler**: `gem install bundler`
   * [**Git**](http://help.github.com/git-installation-redirect)
@@ -48,18 +44,36 @@ Before you get started, the following needs to be installed:
   ```
 
 1. Navigate to the Sharetribe project root directory.
+
+  ```bash
+  cd sharetribe
+  ```
+
+1. Install the required gems by running the following command in the project root directory:
+
+  ```bash
+  bundle install
+  ```
+
 1. Create a database.yml file by copying the example database configuration:
 
   ```bash
   cp config/database.example.yml config/database.yml
   ```
 
-1. Create the required databases with [these commands](https://gist.github.com/804314).
 1. Add your database configuration details to `config/database.yml`. You will probably only need to fill in the password for the database(s).
-1. Install the required gems by running the following command in the project root directory:
+
+1. Create a config.yml file by copying the example configution file:
 
   ```bash
-  bundle install
+  cp config/config.example.yml config/config.yml
+  ```
+
+
+1. Create the database:
+
+  ```bash
+  bundle exec rake db:create
   ```
 
 1. Initialize your database:
@@ -80,29 +94,6 @@ Before you get started, the following needs to be installed:
   bundle exec rake ts:start
   ```
 
-1. Use [Mailcatcher](http://mailcatcher.me) to receive sent emails locally:
-    1. Install Mailcatcher:
-
-        ```bash
-        gem install mailcatcher
-        ```
-
-    1. Start it:
-
-        ```bash
-        mailcatcher
-        ```
-
-    1. Create a `config/config.yml` file and add the following lines to it:
-
-        ```yml
-        development:
-          mail_delivery_method: smtp
-          smtp_email_address: "localhost"
-          smtp_email_port: 1025
-        ```
-
-    1. Open `http://localhost:1080` in your browser
 1. Invoke the delayed job worker:
 
   ```bash
@@ -115,8 +106,34 @@ Before you get started, the following needs to be installed:
   bundle exec rails server
   ```
 
-
 Congratulations! Sharetribe should now be up and running for development purposes. Open a browser and go to the server URL (e.g. http://lvh.me:3000). Fill in the form to create a new marketplace and admin user. You should be now able to access your marketplace and modify it from the admin area.
+
+### Mailcatcher
+
+Use [Mailcatcher](http://mailcatcher.me) to receive sent emails locally:
+
+1. Install Mailcatcher:
+
+  ```bash
+  gem install mailcatcher
+  ```
+
+1. Start it:
+
+  ```bash
+  mailcatcher
+  ```
+
+1. Add the following lines to `config/config.yml`:
+
+```yml
+development:
+  mail_delivery_method: smtp
+  smtp_email_address: "localhost"
+  smtp_email_port: 1025
+```
+
+1. Open `http://localhost:1080` in your browser
 
 ### Database migrations
 
@@ -165,7 +182,30 @@ To automatically run unit tests when code is changed, start [Guard](https://gith
 
 ### Setting up Sharetribe for production
 
-Before starting these steps, perform [steps 1-6 from above](#setting-up-the-development-environment).
+Before starting these steps, perform [steps 1-5 from above](#setting-up-the-development-environment).
+
+1. Set `secret_key_base`
+
+  Generate secret key
+
+  ```bash
+  rake secret
+  ```
+
+  Add the following lines to `config/config.yml`:
+
+  ```yml
+  production:
+    secret_key_base: # add here the generated key
+  ```
+
+  (You can also set the `secret_key_base` environment variable, if you don't want to store the secret key in a file)
+
+1. Create the database:
+
+  ```bash
+  bundle exec rake RAILS_ENV=production db:create
+  ```
 
 1. Initialize your database:
 
@@ -189,16 +229,6 @@ Before starting these steps, perform [steps 1-6 from above](#setting-up-the-deve
 
   ```bash
   bundle exec rake assets:precompile
-  ```
-
-1. Set environment variables
-
-  Set environment variable `secret_key_base`.
-
-  To generate the new `secret_key_base` key, go rails console and type:
-
-  ```ruby
-  SecureRandom.hex(64)
   ```
 
 1. Invoke the delayed job worker:
@@ -228,7 +258,7 @@ It is not recommended to serve static assets from a Rails server in production. 
 
 ### Advanced settings
 
-Default configuration settings are stored in `config/config.default.yml`. If you need to change these, we recommend creating a `config/config.yml` file to override these values. You can also set configuration values to environment variables.
+Default configuration settings are stored in `config/config.default.yml`. If you need to change these, use the `config/config.yml` file to override the defaults. You can also set configuration values to environment variables.
 
 ### Unofficial installation instructions
 
@@ -256,6 +286,7 @@ Given a version number MAJOR.MINOR.PATCH, increment the:
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+See the document [How Sharetribe applies Semantic Versioning](docs/semantic-versioning.md) to read more how Semantic Versioning is applied in practice. 
 
 ## Changes
 
@@ -304,6 +335,13 @@ Browse open issues and submit new ones at http://github.com/sharetribe/sharetrib
 * [Cucumber testing Do's and Don'ts](docs/cucumber-do-dont.md)
 * [Technical roadmap](TECHNICAL_ROADMAP.md)
 * [Feature flags](docs/feature-flags.md)
+
+
+## Community forum
+
+The Sharetribe open source community forum is located at [https://www.sharetribe.com/community/](https://www.sharetribe.com/community/). 
+
+The forum is a great place to ask support and help for example with issues during the installation.
 
 
 ## MIT License

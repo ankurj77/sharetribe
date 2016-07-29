@@ -8,7 +8,56 @@ This file follows the best practices from [keepachangelog.com](http://keepachang
 
 ## [Unreleased]
 
-## [5.3.0] - 2015-02-15
+## [5.6.0] - 2016-03-11
+
+### Added
+
+- Add default queue name to jobs [#1814](https://github.com/sharetribe/sharetribe/pull/1814)
+
+### Changed
+
+- Update Ruby to 2.2.4 [#1774](https://github.com/sharetribe/sharetribe/pull/1774)
+
+### Fixed
+
+- Wrong action was executed when radio buttons were clicked back and forth [#1802](https://github.com/sharetribe/sharetribe/pull/1802)
+
+### Security
+
+- Redirect to HTTPS (if configured) before requesting HTTP basic authentication: [#1793](https://github.com/sharetribe/sharetribe/pull/1793)
+
+## [5.5.0] - 2016-03-02
+
+### Changed
+
+- Migrate legacy passwords to Devise's Bcrypt hashing [#1781](https://github.com/sharetribe/sharetribe/pull/1781)
+- Add listing id to option selections table: [#1761](https://github.com/sharetribe/sharetribe/pull/1761) and [#1762](https://github.com/sharetribe/sharetribe/pull/1762)
+- Support optional site-wide HTTP basic authentication: [#1766](https://github.com/sharetribe/sharetribe/pull/1766)
+
+### Fixed
+
+- Fixed broken FontAwesome asset path [#1756](https://github.com/sharetribe/sharetribe/pull/1756)
+- Listing author wasn't able to give feedback if the transaction starter skipped the feedback [#1767](https://github.com/sharetribe/sharetribe/pull/1767)
+
+### Security
+
+- Update Rails to 4.2.5.2 [#1786](https://github.com/sharetribe/sharetribe/pull/1786)
+
+## [5.4.0] - 2016-02-22
+
+### Changed
+
+- Update Ruby to 2.1.8 [#1750](https://github.com/sharetribe/sharetribe/pull/1750)
+
+### Security
+
+- Update JSON Web Token gem [#1723](https://github.com/sharetribe/sharetribe/pull/1723)
+
+### Fixed
+
+- Configure Delayed Job queue adapter for ActiveJob [#1749](https://github.com/sharetribe/sharetribe/pull/1749)
+
+## [5.3.0] - 2016-02-15
 
 ### Changed
 
@@ -89,7 +138,10 @@ This file follows the best practices from [keepachangelog.com](http://keepachang
 
 For older releases, see [RELEASE_NOTES.md](https://github.com/sharetribe/sharetribe/blob/v5.0.0/RELEASE_NOTES.md).
 
-[Unreleased]: https://github.com/sharetribe/sharetribe/compare/v5.3.0...HEAD
+[Unreleased]: https://github.com/sharetribe/sharetribe/compare/v5.6.0...HEAD
+[5.6.0]: https://github.com/sharetribe/sharetribe/compare/v5.5.0...v5.6.0
+[5.5.0]: https://github.com/sharetribe/sharetribe/compare/v5.4.0...v5.5.0
+[5.4.0]: https://github.com/sharetribe/sharetribe/compare/v5.3.0...v5.4.0
 [5.3.0]: https://github.com/sharetribe/sharetribe/compare/v5.2.2...v5.3.0
 [5.2.2]: https://github.com/sharetribe/sharetribe/compare/v5.2.1...v5.2.2
 [5.2.1]: https://github.com/sharetribe/sharetribe/compare/v5.2.0...v5.2.1

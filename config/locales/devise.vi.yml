@@ -6,7 +6,7 @@ vi:
       already_confirmed: "đã được xác nhận, hãy thử đăng ký lại"
       not_locked: "không bị khoá"
       not_saved:
-        other: "%{count} errors prohibited this %{resource} from being saved:"
+        other: "%{count} lỗi phát sinh. Không thể lưu %{resource}."
   devise:
     failure:
       already_authenticated: "Bạn đã đăng ký."
@@ -14,7 +14,7 @@ vi:
       unconfirmed: "Bạn phải xác nhận tài khoản trước khi tiếp tục."
       locked: "Tài khoản của bạn đã bị khoá."
       invalid: "Email hoặc mật khẩu không hợp lệ."
-      invalid_token: ~
+      invalid_token: "Khóa xác thực không hợp lệ."
       timeout: "Phiên đăng nhập đã hết hạn, hãy đăng nhập lại để tiếp tục."
       inactive: "Tài khoản của bạn chưa được kích hoạt."
     passwords:
@@ -46,8 +46,8 @@ vi:
       send_instructions: "Bạn sẽ nhận được thư chứa các chỉ dẫn mở khoá tài khoản trong ít phút nữa."
       unlocked: "Tài khoản của bạn đã mở khóa thành công. Xin vui lòng đăng nhập để tiếp tục."
     omniauth_callbacks:
-      success: "Cho phép thành công từ tài khoản %{kind}."
-      failure: "Có thể không cho phép bạn từ %{kind} vì \"%{reason} \"."
+      success: "Cấp quyền thành công từ tài khoản %{kind}."
+      failure: "Có thể không cấp quyền cho bạn từ %{kind} vì \"%{reason} \"."
     mailer:
       confirmation_instructions:
         subject: "Chỉ dẫn xác nhận"

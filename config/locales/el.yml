@@ -1175,6 +1175,7 @@ el:
     list_item:
       review: κριτική
       reviews: κριτικές
+      distance_away: ~
     news_item:
       show_less: "Εμφάνιση λιγότερων"
       show_more: "Εμφάνιση περισσότερων"
@@ -1345,6 +1346,7 @@ el:
       request_rejected: "Το αίτημα απορρίφθηκε"
       request_canceled: "Το αίτημα ακυρώθηκε"
       message_sent: "Το μήνυμα εστάλη"
+      message_not_sent: ~
       this_content_is_not_available_in_this_community: "Αυτό το περιεχόμενο δεν είναι διαθέσιμο σε αυτή την κοινότητα."
       unknown_error: "Άγνωστο σφάλμα. Παρακαλούμε επικοινωνήστε μαζί μας και πείτε μας τι συνέβη."
       update_error: "Παρουσιάστηκε σφάλμα κατά την προσπάθεια ενημέρωσης των στοιχείων σας. Παρακαλούμε προσπαθήστε ξανά"

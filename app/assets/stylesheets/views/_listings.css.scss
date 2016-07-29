@@ -227,16 +227,16 @@ $listing-author-avatar-height: 108;
   font-size: 17px;
   font-weight: bold;
   color: #FFFFFF;
-  background-color: #FCBE03;
+  background-color: #00C3E7;
 }
 
 .related-listings-title{
-  border-bottom: 1px solid #000;
+  border-bottom: 2px solid #00C3E7;
 }
 
 .listings-thumb-list {
   width: 640px;
- 
+
   .listing-thumb {
     width: 110px;
     margin-top: 1.17em;
@@ -263,7 +263,7 @@ $listing-author-avatar-height: 108;
         display: inline-block;
         text-align: center;
       }
-    } 
+    }
 
     .thumb-price {
       width: 102px;

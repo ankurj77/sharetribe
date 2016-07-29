@@ -1175,6 +1175,7 @@ pt-PT:
     list_item:
       review: ~
       reviews: ~
+      distance_away: ~
     news_item:
       show_less: ~
       show_more: ~
@@ -1345,6 +1346,7 @@ pt-PT:
       request_rejected: ~
       request_canceled: ~
       message_sent: ~
+      message_not_sent: ~
       this_content_is_not_available_in_this_community: ~
       unknown_error: ~
       update_error: ~
@@ -2083,7 +2085,7 @@ pt-PT:
       december: ~
     today: ~
     clear: ~
-    format: ~
+    format: dd/mm/yyyy
   time:
     formats:
       short: ~

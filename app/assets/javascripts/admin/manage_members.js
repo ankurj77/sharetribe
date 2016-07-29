@@ -45,7 +45,6 @@ window.ST.initializeManageMembers = function() {
 
   var ajaxRequest = postingAllowed.merge(isAdmin);
   ajaxRequest = ajaxRequest.merge(isPremium);
-
   var ajaxResponse = ajaxRequest.ajax().endOnError();
 
   var ajaxStatus = window.ST.ajaxStatusIndicator(ajaxRequest, ajaxResponse);
@@ -74,6 +73,6 @@ window.ST.initializeManageMembers = function() {
   // Attach analytics click handler for CSV export
   $(".js-users-csv-export").click(function(){
     /* global report_analytics_event */
-    report_analytics_event(['admin', 'export', 'users']);
+    report_analytics_event('admin', 'export', 'users');
   });
 };

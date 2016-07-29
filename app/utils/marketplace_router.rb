@@ -58,16 +58,30 @@ module MarketplaceRouter
       [:protocol, :string, :optional],
       [:route_name, :symbol, :optional],
 
-      [:status, :symbol, :mandatory],
+      [:status, :symbol, :mandatory]
     )
 
     module_function
 
-    def create_request(opts); Request.call(opts) end
-    def create_community(opts); Community.call(opts) end
-    def create_paths(opts); Paths.call(opts) end
-    def create_configs(opts); Configs.call(opts) end
-    def create_other(opts); Other.call(opts) end
+    def create_request(opts)
+      Request.call(opts)
+    end
+
+    def create_community(opts)
+      Community.call(opts)
+    end
+
+    def create_paths(opts)
+      Paths.call(opts)
+    end
+
+    def create_configs(opts)
+      Configs.call(opts)
+    end
+
+    def create_other(opts)
+      Other.call(opts)
+    end
   end
 
   module_function
@@ -85,7 +99,7 @@ module MarketplaceRouter
       other:                   DataTypes.create_other(other),
       protocol:                new_protocol,
       protocol_needs_redirect: protocol_needs_redirect,
-      is_domain_verification:  is_domain_verification,
+      is_domain_verification:  is_domain_verification
     )
 
     block.call(target) if target
@@ -116,12 +130,35 @@ module MarketplaceRouter
       elsif other[:community_search_status] == :not_found && !other[:no_communities]
         # Community not found
         # -> Redirect to not found
-        paths[:community_not_found].merge(status: :found, protocol: protocol)
+        Maybe(paths[:community_not_found])[:url].map { |u|
+          URLUtils.build_url(u, {utm_source: request[:host], utm_medium: "redirect", utm_campaign: "na-auto-redirect"})
+        }.map { |u|
+          {url: u, status: :found, protocol: protocol}
+        }.or_else {
+          paths[:community_not_found].merge(status: :found, protocol: protocol)
+        }
 
-      elsif community && (community[:deleted] || community[:closed])
+      elsif community && community[:deleted]
         # Community deleted
         # -> Redirect to not found
-        paths[:community_not_found].merge(status: :moved_permanently, protocol: protocol)
+        Maybe(paths[:community_not_found])[:url].map { |u|
+          URLUtils.build_url(u, {utm_source: request[:host], utm_medium: "redirect", utm_campaign: "dl-auto-redirect"})
+        }.map { |u|
+          {url: u, status: :moved_permanently, protocol: protocol}
+        }.or_else {
+          paths[:community_not_found].merge(status: :moved_permanently, protocol: protocol)
+        }
+
+      elsif community && community[:closed]
+        # Community closed
+        # -> Redirect to not found
+        Maybe(paths[:community_not_found])[:url].map { |u|
+          URLUtils.build_url(u, {utm_source: request[:host], utm_medium: "redirect", utm_campaign: "qc-auto-redirect"})
+        }.map { |u|
+          {url: u, status: :moved_permanently, protocol: protocol}
+        }.or_else {
+          paths[:community_not_found].merge(status: :moved_permanently, protocol: protocol)
+        }
 
       elsif community && community[:domain].present? && community[:use_domain] && request[:host] != community[:domain]
         # Community has domain ready, should use it
@@ -140,10 +177,7 @@ module MarketplaceRouter
         # Needs protocol redirect (to https)
         # -> Redirect to https
         {url: "#{protocol}://#{request[:host]}#{request[:port_string]}#{request[:fullpath]}", status: :moved_permanently}
-      else
-        # no need to redirect
-        nil
-      end
+            end
 
     # If protocol redirect is needed, the status is always :moved_permanently
     Maybe(target)

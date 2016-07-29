@@ -15,6 +15,41 @@ RAILS_ENV=production rake sharetribe:generate_customization_stylesheets_immediat
 rake assets:precompile
 ```
 
+## Unreleased
+
+## Upgrade from 5.5.0 to 5.6.0
+
+Ruby version is updated from 2.1.8 to 2.2.4. The update should reduce memory usage and improve performance.
+
+Using [RVM](https://rvm.io/), you can upgrade your local Ruby version like this:
+
+```
+rvm install ruby-2.2.4
+rvm use ruby-2.2.4
+gem install bundler
+bundle install
+```
+
+## Upgrade from 5.4.0 to 5.5.0
+
+This release removes the support for legacy hashing algorithm that was used with the legacy "ASI" service.
+
+If `use_asi_encryptor` was configured to `false` (default) then you can safely upgrade and roll back this release.
+
+However, if `use_asi_encryptor` was configured to `true` then you can not roll back this released without losing user authentication data. If you need to roll back, users need to request new password by clicking the "Forgot password link".
+
+## Upgrade from 5.3.0 to 5.4.0
+
+Ruby version is updated from 2.1.2 to 2.1.8. The update contains security and bug fixes.
+
+Using [RVM](https://rvm.io/), you can upgrade your local Ruby version like this:
+```
+rvm install ruby-2.1.8
+rvm use ruby-2.1.8
+gem install bundler
+bundle install
+```
+
 ## Upgrade from 5.2.x to 5.3.0
 
 This version contains some changes to the caching logic. The Rails cache needs to be cleared before upgrading.
