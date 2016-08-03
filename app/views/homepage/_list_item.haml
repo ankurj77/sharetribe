@@ -3,14 +3,19 @@
     - if listing.listing_images.size > 0
       = link_to listing_path(listing.url), :class => "home-list-image-container-desktop" do
         = image_tag listing.listing_images.first[:small_3x2], {:alt => listed_listing_title(listing), :class => "home-list-image"}
+        - if listing.author.is_premium
+          = image_tag 'premium.png', style: "position:absolute;left:7.5em;bottom: 0;"
     - if listing.listing_images.size > 0
       = link_to listing_path(listing.url), :class => "home-list-image-container-mobile" do
         = image_tag listing.listing_images.first[:thumb], {:alt => listed_listing_title(listing), :class => "home-list-image"}
+        - if listing.author.is_premium
+          = image_tag 'premium.png', style: "position:absolute;left:3em;bottom: 0;width:25px;"
+
     .home-list-details-right
       .home-list-price
         - if listing.price
           .home-list-price-value
-            = humanized_money_with_symbol(listing.price).upcase
+            = APP_CONFIG.currency_symbol + humanized_money(listing.price).upcase
           - price_text = nil
           - if listing.quantity.present?
             - price_text = t("listings.form.price.per") + " " + listing.quantity
@@ -49,7 +54,7 @@
     .home-list-price-mobile{:class => (listing.listing_images.size > 0 ? "home-list-price-mobile-with-listing-image" : "home-list-price-mobile-without-listing-image")}
       - if listing.price
         .home-list-price-value-mobile
-          = humanized_money_with_symbol(listing.price).upcase
+          = APP_CONFIG.currency_symbol + humanized_money(listing.price).upcase
         - price_text = nil
         - if listing.quantity.present?
           - price_text = t("listings.form.price.per") + " " + listing.quantity

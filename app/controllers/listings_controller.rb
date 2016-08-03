@@ -68,7 +68,7 @@ class ListingsController < ApplicationController
               page: search[:page],
               per_page: search[:per_page]
             ))
-            }.data
+          }.data
 
           render :partial => "listings/profile_listings", :locals => {person: @person, limit: per_page, listings: listings}
         else
@@ -147,13 +147,13 @@ class ListingsController < ApplicationController
   def listing_bubble_multiple
     ids = numbers_str_to_array(params[:ids])
 
-    @listings = if @current_user || !@current_community.private?
-      @current_community.listings.where(listings: {id: ids}).order("listings.created_at DESC")
+    if @current_user || !@current_community.private?
+      @listings = @current_community.listings.where(listings: {id: ids}).order("listings.created_at DESC")
     else
-      []
+      @listings = []
     end
 
-    if !@listings.empty?
+    if @listings.size > 0
       render :partial => "homepage/listing_bubble_multiple"
     else
       render :partial => "bubble_listing_not_visible"
@@ -186,7 +186,48 @@ class ListingsController < ApplicationController
     received_positive_testimonials = TestimonialViewUtils.received_positive_testimonials_in_community(@listing.author, @current_community)
     feedback_positive_percentage = @listing.author.feedback_positive_percentage_in_community(@current_community)
 
-    youtube_link_ids = feature_enabled?(:youtube_embeds) ? youtube_video_ids(@listing.description) : []
+    @related_listings = @listing.category.listings.where(["open=1 AND deleted=0 AND id != ?", @listing.id])
+    @recent_listings=[]
+    
+    if @current_user.nil? then
+      @related_listings = @related_listings.order("created_at desc").limit(5)
+
+      if cookies[:recent_views].blank?
+        cookies[:recent_views] = @listing.id.to_s + ","
+      else
+        recent_ids = cookies[:recent_views].split(",").map(&:to_i)
+        recent_ids.delete_if {|id| id == @listing.id }
+        recent_ids.delete_at(0) if recent_ids.length > 5
+
+        recent_ids.each{|id|
+          listing = Listing.find_by_id(id)
+          @recent_listings << listing unless listing.nil?
+        }
+    
+        recent_ids.push(@listing.id)
+        cookies[:recent_views] = recent_ids.join(",")
+      end
+    else
+      @related_listings = @related_listings.where.not(id: @current_user.listings.ids).order("created_at desc").limit(5)
+
+      if @current_user.recent_views.blank?
+        @current_user.recent_views = @listing.id.to_s + ","
+      else
+        recent_ids = @current_user.recent_views.split(",").map(&:to_i)
+        recent_ids.delete_if {|id| id == @listing.id }
+        recent_ids.delete_at(0) if recent_ids.length > 5
+
+        recent_ids.each{|id|
+          listing = Listing.find_by_id(id)
+          @recent_listings << listing unless listing.nil?
+        }
+    
+        recent_ids.push(@listing.id)
+        @current_user.recent_views = recent_ids.join(",")
+      end
+
+      @current_user.save
+    end
 
     render locals: {
              form_path: form_path,
@@ -198,8 +239,7 @@ class ListingsController < ApplicationController
              country_code: community_country_code,
              received_testimonials: received_testimonials,
              received_positive_testimonials: received_positive_testimonials,
-             feedback_positive_percentage: feedback_positive_percentage,
-             youtube_link_ids: youtube_link_ids
+             feedback_positive_percentage: feedback_positive_percentage
            }
   end
 
@@ -224,7 +264,7 @@ class ListingsController < ApplicationController
 
     @listing = Listing.new
 
-    if !@current_user.location.nil?
+    if (@current_user.location != nil)
       temp = @current_user.location
       @listing.build_origin_loc(temp.attributes)
     else
@@ -237,7 +277,7 @@ class ListingsController < ApplicationController
   def edit_form_content
     return redirect_to action: :edit unless request.xhr?
 
-    unless @listing.origin_loc
+    if !@listing.origin_loc
         @listing.build_origin_loc()
     end
 
@@ -267,7 +307,7 @@ class ListingsController < ApplicationController
         listing_shape_id: shape[:id],
         transaction_process_id: shape[:transaction_process_id],
         shape_name_tr_key: shape[:name_tr_key],
-        action_button_tr_key: shape[:action_button_tr_key]
+        action_button_tr_key: shape[:action_button_tr_key],
     ).merge(unit_to_listing_opts(m_unit)).except(:unit)
 
     @listing = Listing.new(listing_params)
@@ -311,7 +351,7 @@ class ListingsController < ApplicationController
 
   def edit
     @selected_tribe_navi_tab = "home"
-    unless @listing.origin_loc
+    if !@listing.origin_loc
         @listing.build_origin_loc()
     end
 
@@ -495,6 +535,8 @@ class ListingsController < ApplicationController
         always_show_additional_shipping_price: shape[:units].length == 1 && shape[:units].first[:kind] == :quantity,
         paypal_fees_url: PaypalCountryHelper.fee_link(community_country_code)
       })
+    else
+      nil
     end
   end
 
@@ -562,10 +604,10 @@ class ListingsController < ApplicationController
     category = Category.find_by_id(params["category"])
     category_label = (category.present? ? "(" + localized_category_label(category) + ")" : "")
 
-    listing_type_label = if ["request","offer"].include? params['share_type']
-      t("listings.index.#{params['share_type']+"s"}")
+    if ["request","offer"].include? params['share_type']
+      listing_type_label = t("listings.index.#{params['share_type']+"s"}")
     else
-      t("listings.index.listings")
+      listing_type_label = t("listings.index.listings")
     end
 
     t("listings.index.feed_title",
@@ -625,10 +667,10 @@ class ListingsController < ApplicationController
 
     unless @listing.visible_to?(@current_user, @current_community) || (@current_user && @current_user.has_admin_rights_in?(@current_community))
       if @current_user
-        flash[:error] = if @listing.closed?
-          t("layouts.notifications.listing_closed")
+        if @listing.closed?
+          flash[:error] = t("layouts.notifications.listing_closed")
         else
-          t("layouts.notifications.you_are_not_authorized_to_view_this_content")
+          flash[:error] = t("layouts.notifications.you_are_not_authorized_to_view_this_content")
         end
         redirect_to root and return
       else
@@ -659,9 +701,7 @@ class ListingsController < ApplicationController
       when :dropdown
         option_id = answer_value.to_i
         answer = DropdownFieldValue.new
-        answer.custom_field_option_selections = [CustomFieldOptionSelection.new(:custom_field_value => answer,
-                                                                                :custom_field_option_id => answer_value,
-                                                                                :listing_id => listing_id)]
+        answer.custom_field_option_selections = [CustomFieldOptionSelection.new(:custom_field_value => answer, :custom_field_option_id => answer_value)]
         answer
       when :text
         answer = TextFieldValue.new
@@ -673,9 +713,7 @@ class ListingsController < ApplicationController
         answer
       when :checkbox
         answer = CheckboxFieldValue.new
-        answer.custom_field_option_selections = answer_value.map { |value|
-          CustomFieldOptionSelection.new(:custom_field_value => answer, :custom_field_option_id => value, :listing_id => listing_id)
-        }
+        answer.custom_field_option_selections = answer_value.map { |value| CustomFieldOptionSelection.new(:custom_field_value => answer, :custom_field_option_id => value) }
         answer
       when :date_field
         answer = DateFieldValue.new
@@ -715,7 +753,7 @@ class ListingsController < ApplicationController
   end
 
   def is_answer_value_blank(value)
-    if value.is_a?(Hash)
+    if value.kind_of?(Hash)
       value["(3i)"].blank? || value["(2i)"].blank? || value["(1i)"].blank?  # DateFieldValue check
     else
       value.blank?
@@ -749,7 +787,7 @@ class ListingsController < ApplicationController
       when "shipping_price_additional"
         hash.merge(:shipping_price_additional_cents =>  MoneyUtil.parse_str_to_subunits(v, currency))
       else
-        hash.merge(k.to_sym => v)
+        hash.merge( k.to_sym => v )
       end
     end
   end

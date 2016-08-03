@@ -44,6 +44,7 @@ body {
 .page-content {
   padding-bottom: lines(3);
   padding-top: lines(0.5);
+  min-height: 800px;
 
   p {
     margin-bottom: lines(0.5);
@@ -1933,6 +1934,50 @@ $network-green: #00a26c;
   max-width: em(1920);
   margin-left: auto;
   margin-right: auto;
+}
+
+// footer
+#footer {
+  width: 100%;
+  min-height: 250px;
+  background: #FCBE03;
+}
+
+.about-us {
+  color: white;
+  margin: 0px 0px 10px 20px;
+  padding-top: 10px;
+
+  .title {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .split-line {
+    border-bottom: white 1px dotted;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+}
+.secondcry{
+  margin-top: 13px;
+}
+
+.facebook-icon {
+  float: left;
+  background: #DBCEA8;
+  width: 28px;
+  height: 26px;
+  border-radius: 5px;
+  color: black;
+}
+
+.premium {
+  padding-right: 60px;
+  margin-top: -12px;
+  float: right;
 }
 
 figure.fluidratio {
