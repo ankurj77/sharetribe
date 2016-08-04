@@ -28,6 +28,11 @@
   .admin-left-navi-link-group-title
     = t("admin.left_hand_navigation.configure")
 
+  
+  %a.left-navi-link{:href => "/en/admin/dynamic_ads", :title => "Dynamic Ads"}
+    .left-navi-link-icon.ss-list
+    .left-navi-link-text Dynamin Ads
+
   .admin-left-navi-link-group.admin-left-navi-link-group-last
     - grouped_links[:configure].each do |link|
       %a{:id => link[:id], :href => link[:path], :title => link[:text], :class => (link[:name].eql?(sel_link) ? "selected left-navi-link" : "left-navi-link")}

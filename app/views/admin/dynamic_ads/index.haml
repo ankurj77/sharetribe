@@ -1,0 +1,38 @@
+- content_for :title_header do
+  %h1
+    = t("layouts.admin.admin")
+    = "-"
+    ="Listing dynamic ads"
+
+= render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+
+.left-navi-section
+  .row
+    .col-12
+      %form
+        %table#admin_members_list
+          %thead
+            %tr
+              %th="Title"
+              %th="Link"
+              %th="Image"
+              %th="Action"
+          %tbody
+            - @ads.each do |ad|
+              - unless ad.blank?
+                %tr
+                  %td.admin-members-full-name
+                    = ad.title
+                  %td
+                    = ad.link
+                  %td= image_tag(ad.image.url || missing_avatar(:thumb), :class => "home-fluid-thumbnail-grid-author-avatar-image")
+                  %td
+                    = link_to edit_admin_dynamic_ad_path(ad), :class => "category-action-edit" do
+                      = icon_tag("edit", ["icon-fix"])
+
+                    = link_to admin_dynamic_ad_path(ad), :method => :delete, :data => {:confirm => "Are yoy sure?"} do
+                      = icon_tag("cross", ["icon-fix"])
+                  
+  .row
+    .col-12
+      = link_to "Create New Ad", new_admin_dynamic_ad_path

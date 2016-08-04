@@ -178,3 +178,9 @@
 :javascript
   (adsbygoogle = window.adsbygoogle || []).push({});
 
+- DynamicAd.all.each do |ad|
+  = link_to ad.link, target: '_blank' do
+    .col-3
+      .secondcry
+        %img{:alt => "Secondcry", :src => ad.image, :style => "width: 80%; padding: 5px;"}
+

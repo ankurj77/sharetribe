@@ -113,7 +113,7 @@ Kassi::Application.routes.draw do
     end
 
     namespace :admin do
-
+      resources :dynamic_ads
       get  "/paypal_preferences"                      => "paypal_preferences#index"
       post "/paypal_preferences/preferences_update"   => "paypal_preferences#preferences_update"
       get  "/paypal_preferences/account_create"       => "paypal_preferences#account_create"

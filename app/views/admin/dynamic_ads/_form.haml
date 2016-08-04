@@ -1,0 +1,14 @@
+= form_for [:admin, @dynamin_ad] do |form|
+  = form.label :title, "Title"
+  = form.text_field :title
+  = form.label :link, "Link"
+  = form.text_field :link, :placeholder => "https://www.website.com/"
+  = form.label :image, "Image"
+  = form.file_field :image
+  .add-category-buttons
+    .inline-button-container
+      = form.button "Save"
+    .inline-button-container
+      %a{:href => admin_dynamic_ads_path, :class => "cancel-button"}
+        .content
+          = "Cancel"
