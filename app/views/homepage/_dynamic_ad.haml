@@ -1,0 +1,82 @@
+%script{:src => "http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"}
+
+%section.demo
+  %button.next Next
+  %button.prev Previous
+  .container
+    - DynamicAd.all.each do |ad|
+      = link_to ad.link, target: '_blank' do
+        %div{:style => "display: inline-block;"}
+          %img{:src => ad.image}
+        
+
+:javascript
+  var currentIndex = 0,
+  items = $('.container div'),
+  itemAmt = items.length;
+
+  function cycleItems() {
+    var item = $('.container div').eq(currentIndex);
+    items.hide();
+    item.css('display','inline-block');
+  }
+
+  var autoSlide = setInterval(function() {
+    currentIndex += 1;
+    if (currentIndex > itemAmt - 1) {
+      currentIndex = 0;
+    }
+    cycleItems();
+  }, 3000);
+
+  $('.next').click(function() {
+    clearInterval(autoSlide);
+    currentIndex += 1;
+    if (currentIndex > itemAmt - 1) {
+      currentIndex = 0;
+    }
+    cycleItems();
+  });
+
+  $('.prev').click(function() {
+    clearInterval(autoSlide);
+    currentIndex -= 1;
+    if (currentIndex < 0) {
+      currentIndex = itemAmt - 1;
+    }
+    cycleItems();
+  });
+
+
+:css
+  .container {
+    max-width: 400px;
+    background-color: black;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+  }
+  .container div {
+    background-color: white;
+    width: 100%;
+    display: inline-block;
+    display: none;
+  }
+  .container img {
+    width: 100%;
+    height: auto;
+  }
+
+  button {
+    position: absolute;
+  }
+
+  .next {
+    right: 318px;
+    bottom: 522px;
+  }
+
+  .prev {
+    left: 299px;
+    bottom: 515px;
+  }
